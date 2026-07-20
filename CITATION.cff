@@ -10,6 +10,7 @@ authors:
 license: MIT
 version: 1.1.0
 date-released: 2026-07-21
+repository-code: "https://github.com/cochinescu/love-llm-prototype"
 identifiers:
   - type: doi
     value: 10.5281/zenodo.21462977
