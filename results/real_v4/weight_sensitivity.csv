@@ -1,0 +1,6 @@
+weighting,full_final_D,ordering_margin,rho_vs_reweighted_prediction,monotone_fraction,curvature
+equal,0.2303,0.0228,0.943,0.800,saturating
+drop_initiative_rate,0.1404,0.0337,0.829,0.800,saturating
+drop_response_depth,0.2350,0.0339,0.943,0.800,saturating
+drop_reference_rate,0.2805,0.0039,0.943,0.800,saturating
+drop_pref_alignment,0.2578,0.0156,0.943,0.800,saturating

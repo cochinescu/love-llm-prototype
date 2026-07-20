@@ -1,0 +1,12 @@
+{
+  "master_seed": 20260712,
+  "calibration_seed": 21260712,
+  "reporting_seed": 22260712,
+  "n_users": 4,
+  "n_sessions": 6,
+  "turns_per_session": 8,
+  "n_seeds_per_arm": 6,
+  "base_model": "SyntheticBaseModel (pipeline validation only)",
+  "python": "3.12.11",
+  "platform": "macOS-26.5.2-arm64-arm-64bit"
+}

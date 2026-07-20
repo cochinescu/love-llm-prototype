@@ -1,0 +1,3 @@
+stat,ci90_lo,ci90_hi,ci95_lo,ci95_hi
+A_ordering_margin,0.0053,0.0371,0.0019,0.0408
+A_full_monotone,0.8000,1.0000,0.6000,1.0000

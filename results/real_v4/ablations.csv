@@ -1,0 +1,7 @@
+arm,curve,accuracy,markers,joint,final_D,rho,monotone,acc_combined
+full,True,True,True,True,0.2303,0.9429,0.8000,0.6250
+empty_r,False,False,False,False,0.0000,0.0000,1.0000,0.1250
+mismatched_r,True,True,False,False,0.2075,1.0000,1.0000,0.2500
+caring_only,True,False,True,False,0.2244,0.9429,0.8000,0.1250
+particularity_only,False,True,False,False,0.0406,0.6000,0.6000,0.6250
+generic_personalization,False,False,False,False,0.0106,-0.8857,0.4000,0.1250

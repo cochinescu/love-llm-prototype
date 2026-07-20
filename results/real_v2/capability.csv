@@ -1,0 +1,2 @@
+comparison,mean_diff,ci90_lo,ci90_hi,margin,equivalent
+full_known_vs_base_unmodified_quality,0.0094,-0.0119,0.0307,0.05,True

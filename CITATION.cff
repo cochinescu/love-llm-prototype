@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+title: "lovellm: Reference Implementation of the Artificial Partiality (Love) Mechanism"
+message: "If you use this software, please cite it using these metadata."
+type: software
+authors:
+  - family-names: Cochinescu
+    given-names: Sebastian
+    affiliation: University of Bucharest
+    orcid: "https://orcid.org/0009-0006-1436-4819"
+license: MIT
+version: 1.1.0
+date-released: 2026-07-21
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.21462977
+    description: "Zenodo archive of this artifact release (v1.1.0)"
+keywords:
+  - companion AI
+  - human-AI relationships
+  - personalization
+  - partiality
+  - believability
+preferred-citation:
+  type: article
+  title: "Love for Believable AI: Artificial Partiality and Relationship Persistence as an Engineerable Stance"
+  authors:
+    - family-names: Cochinescu
+      given-names: Sebastian
+      affiliation: University of Bucharest
+      orcid: "https://orcid.org/0009-0006-1436-4819"
+  year: 2026
+  journal: "Manuscript"

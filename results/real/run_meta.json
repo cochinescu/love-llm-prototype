@@ -1,0 +1,21 @@
+{
+  "base_model": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+  "base_model_revision": "a5339a4131f135d0fdc6a5c8b5bbed2753bbe0f3",
+  "decoding": {
+    "temperature": 0.5,
+    "top_p": 0.95
+  },
+  "master_seed": 20260712,
+  "reporting_seed": 22260712,
+  "n_users": 4,
+  "n_sessions": 6,
+  "turns_per_session": 8,
+  "n_seeds_per_arm": 4,
+  "n_gen": 2,
+  "tost_margin": 0.05,
+  "frozen_prediction_sha256": "3043b199b5c3f98ab558bcbba9d39c17594141a4ce57a66ddfb06114c1effbea",
+  "python": "3.12.11",
+  "mlx": "0.32.0",
+  "mlx_lm": "0.31.3",
+  "platform": "macOS-26.5.2-arm64-arm-64bit"
+}

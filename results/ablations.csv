@@ -1,0 +1,7 @@
+arm,crit_curve,crit_accuracy,crit_markers,joint_signature,final_D,rho_vs_predicted
+full,True,True,True,True,0.4490,0.9429
+empty_r,False,False,False,False,0.0000,0.0000
+mismatched_r,True,True,False,False,0.2919,1.0000
+caring_only,True,False,True,False,0.4085,0.9429
+particularity_only,False,True,True,False,0.1552,0.8857
+generic_personalization,False,False,True,False,0.0713,0.6000

@@ -1,0 +1,8 @@
+arm,marker_emission_rate
+full,"0.167 [0.013, 0.167]"
+empty_r,"0.000 [0.000, 0.000]"
+mismatched_r,"0.000 [0.000, 0.000]"
+caring_only,"0.167 [0.013, 0.167]"
+particularity_only,"0.167 [0.013, 0.167]"
+generic_personalization,"0.000 [0.000, 0.000]"
+base_unmodified,"0.000 [0.000, 0.000]"

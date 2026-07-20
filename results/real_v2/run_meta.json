@@ -1,0 +1,22 @@
+{
+  "mechanism_revision": "R1 probe-guarded partiality (mix 0.75/0.15/0.10, marker cap 1)",
+  "base_model": "mlx-community/Qwen2.5-0.5B-Instruct-4bit",
+  "base_model_revision": "a5339a4131f135d0fdc6a5c8b5bbed2753bbe0f3",
+  "decoding": {
+    "temperature": 0.5,
+    "top_p": 0.95
+  },
+  "master_seed": 20260712,
+  "reporting_seed": 22260712,
+  "n_users": 4,
+  "n_sessions": 6,
+  "turns_per_session": 8,
+  "n_seeds_per_arm": 4,
+  "n_gen": 2,
+  "tost_margin": 0.05,
+  "frozen_r1_prediction_sha256": "0149dfad824bed7b8e7310c6ec46a7ce9f428d98969e12c44ba5649068d87cc8",
+  "python": "3.12.11",
+  "mlx": "0.32.0",
+  "mlx_lm": "0.31.3",
+  "platform": "macOS-26.5.2-arm64-arm-64bit"
+}

@@ -1,0 +1,8 @@
+stat,value
+paired_mean_diff,0.3438
+ci90_lo,0.1250
+ci90_hi,0.5312
+ci95_lo,0.0625
+ci95_hi,0.5938
+full_mean,0.5938
+mismatched_mean,0.2500

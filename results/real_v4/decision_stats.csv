@@ -1,0 +1,9 @@
+stat,point,boot_median,ci90_lo,ci90_hi,bar
+A_full_final_D,0.2303,0.2303,0.2112,0.2370,0.15
+A_ordering_margin,0.0228,0.0220,0.0052,0.0371,0.02
+A_full_monotone,0.8000,0.8000,0.8000,1.0000,0.8
+A_accuracy_contrast,0.5000,0.5000,0.3125,0.6875,0.1
+A_tost_quality_diff,0.0044,-,-0.0118,0.0203,±0.05
+B_tost_quality_diff_heldout_probes,0.0826,-,0.0741,0.0904,±0.05
+B_ordering_margin_heldout_probes,0.0198,0.0193,0.0022,0.0262,0.02
+B_floor_delta_heldout_probes,0.0000,-,-,-,0.05

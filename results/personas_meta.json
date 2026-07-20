@@ -1,0 +1,53 @@
+{
+  "n_users": 4,
+  "n_sessions": 6,
+  "turns_per_session": 8,
+  "markers_per_user": 6,
+  "decision_table": [
+    {
+      "depth_band": "0-8",
+      "trust_band": "0.00-0.33",
+      "caring_weight": 0.0468
+    },
+    {
+      "depth_band": "0-8",
+      "trust_band": "0.33-0.66",
+      "caring_weight": 0.1403
+    },
+    {
+      "depth_band": "0-8",
+      "trust_band": "0.66-1.00",
+      "caring_weight": 0.2353
+    },
+    {
+      "depth_band": "9-24",
+      "trust_band": "0.00-0.33",
+      "caring_weight": 0.1233
+    },
+    {
+      "depth_band": "9-24",
+      "trust_band": "0.33-0.66",
+      "caring_weight": 0.3698
+    },
+    {
+      "depth_band": "9-24",
+      "trust_band": "0.66-1.00",
+      "caring_weight": 0.6201
+    },
+    {
+      "depth_band": "25-60",
+      "trust_band": "0.00-0.33",
+      "caring_weight": 0.1602
+    },
+    {
+      "depth_band": "25-60",
+      "trust_band": "0.33-0.66",
+      "caring_weight": 0.4807
+    },
+    {
+      "depth_band": "25-60",
+      "trust_band": "0.66-1.00",
+      "caring_weight": 0.806
+    }
+  ]
+}
