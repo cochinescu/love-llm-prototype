@@ -1,0 +1,12 @@
+stat,value
+paired_mean_diff,0.3750
+ci90_lo,0.1250
+ci90_hi,0.5938
+ci95_lo,0.0938
+ci95_hi,0.6250
+full_mean,0.6250
+mismatched_mean,0.2500
+n_positive,11
+n_zero,3
+n_negative,2
+estimator_stream,pipeline.estimator_input

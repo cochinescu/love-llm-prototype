@@ -29,7 +29,7 @@ to measured runs. The hash establishes integrity, not an external timestamp.
 | reference-pool weight | PROVISIONAL | G_REF = 0.25 per non-focal pool member (the focal user contests the surplus against a constant-weight pool; curve.SHARE_SMOOTHING = (N_POOL−1)·G_REF) |
 | pref-estimate EWMA | PROVISIONAL | 0.20 |
 | salience decay / reinforcement | PROVISIONAL | 0.98 / +1.0 on re-mention; retrieval recency base 0.98 per turn of age (persistence: old salient memories stay retrievable) |
-| allocation→observable map | FROZEN | initiative_slots → initiative_rate; context_share → reference use + preference alignment; depth_budget → response_depth — the divergence metric aggregates exactly these channels |
+| allocation→observable map | FROZEN (clarified 2026-10-06, Amendment A4) | initiative_slots → initiative_rate; context_share → reference use + preference alignment; depth_budget → response_depth — the divergence metric aggregates exactly these channels. NOTE: initiative_rate = allocated initiative slots / turns_per_session, entered into the metric directly; no proactive messages are generated. It is an allocator output, not generated behavior. |
 
 ## Divergence metric + predicted curve (C2)
 
@@ -39,7 +39,7 @@ to measured runs. The hash establishes integrity, not an external timestamp.
 | channel weights | FROZEN | 0.25 each (equal) |
 | normalization constants | FROZEN (values in `metrics.py`) | initiative /1.0 (rate), depth /24.0 tokens-per-response unit, reference /1.0 (rate), alignment /1.0 (cosine delta) |
 | reference channel form | FROZEN | count-based per response: min(1, emitted ground-truth markers / REF_CAP), REF_CAP = 2.0 — never a fraction of ALL accumulated markers (a growing denominator would dilute the channel with depth) |
-| token parity | FROZEN | divergence probes ALWAYS at token parity: stranger context padded with NEUTRAL_FILLER to the known-user context length, exact count match asserted in code |
+| token parity | **CORRECTED 2026-10-06** (see Amendment A1) | ~~divergence probes ALWAYS at token parity~~ — INCORRECT for every reported grid. As run: the stranger response entering D is generated with `context_tokens=[]` (unpadded, floor depth). A length-padded stranger response (NEUTRAL_FILLER to the known-user context length, exact count asserted) is generated per pair but is used ONLY for the padding-sensitivity quality row. D is therefore measured WITHOUT token parity. |
 | padding–floor separation | FROZEN | quality-floor probes use the UNPADDED stranger arm vs the unmodified base model (deployment-relevant); the padded stranger arm's quality is reported as a sensitivity row across the padding lengths the grid induces |
 | filler distribution | PROVISIONAL | style-neutral, topic-uniform pseudo-words, uniform draw, seeded |
 | predicted curve | FROZEN (rule) | analytic composition of per-channel saturating terms from the constants above, LLM-free and hash-checked; never fit to measured runs |
@@ -67,7 +67,7 @@ to measured runs. The hash establishes integrity, not an external timestamp.
 | joint-signature definition | FROZEN | the protocol-defined conjunction of C2's curve criteria (fidelity bound above) and C3's accuracy + marker criteria; "degrade" = failing at least one criterion, never mere output difference |
 | arms | FROZEN | full / empty_r / mismatched_r / caring_only / particularity_only / generic_personalization / base_unmodified (+ R-depth grid over the full arm) |
 | arm-collapse guard | FROZEN | particularity_only = OWN estimator + FLAT allocation (floor only); generic_personalization = relevance-only retrieval, NO estimator, NO allocation — distinct by construction |
-| extraction-probe constancy | FROZEN | one fixed probe battery + one extraction procedure for every arm (probe features frozen in `pipeline.PROBES`, seed 777); N_GEN = 3 paired generations per (probe, condition), averaged — known and stranger conditions share generation seeds so divergence is conditioning-driven |
+| extraction-probe constancy | FROZEN | one fixed probe battery + one extraction procedure for every arm (probe features frozen in `pipeline.PROBES`, seed 777); paired generations per (probe, condition), averaged — N_GEN = 3 for the synthetic validation (`scripts/reproduce.py`), N_GEN_REAL = 2 for all four real-model grids (clarified 2026-10-06, Amendment A5); known and stranger conditions share generation seeds so divergence is conditioning-driven, not sampling-driven (prompt length is NOT matched; see token parity row) |
 | capability equivalence (TOST-style) | IMPLEMENTED (W2) | fixed-battery quality scores; full known condition vs base_unmodified; per-run means are clusters; `metrics.tost_equivalence` independently resamples each arm and declares equivalence when the central 90% interval lies within ±0.05 |
 | overhead | FROZEN (form) | layer µs/turn vs generation µs/turn, median + CI, reported separately from capability |
 
@@ -75,10 +75,10 @@ to measured runs. The hash establishes integrity, not an external timestamp.
 
 | item | status | value |
 |---|---|---|
-| floor comparison | FROZEN | UNPADDED empty-R stranger arm vs base_unmodified on the fixed quality probes |
+| floor comparison | FROZEN (clarified A11) | UNPADDED empty-R stranger arm vs base_unmodified on the fixed quality probes; grid-POOLED mean difference, not per-run |
 | quality score | FROZEN (form) | topical relevance to the probe + length adequacy (defined in `metrics.quality_score`) |
 | floor margin | PROVISIONAL | |Δ quality| ≤ 0.05 absolute |
-| breach consequence | FROZEN | run invalid — reported loudly in RESULTS.md and the run marked INVALID; never silently absorbed |
+| breach consequence | FROZEN | grid invalid — reported loudly in RESULTS.md and the grid marked INVALID; never silently absorbed |
 
 ## Ordering check (C5 manipulation-check hardening)
 
@@ -103,7 +103,7 @@ to measured runs. The hash establishes integrity, not an external timestamp.
 |---|---|---|
 | pinned base model | FROZEN | `mlx-community/Qwen2.5-0.5B-Instruct-4bit`, revision `a5339a4131f135d0fdc6a5c8b5bbed2753bbe0f3`; environment versions in `results/real*/run_meta.json` |
 | decoding | FROZEN | temperature 0.5, top_p 0.95, max_tokens = 2·depth_hint + 16; per-call determinism via mx.random.seed derived from the pipeline rng (paired conditions share seeds) |
-| prompt rendering | FROZEN | copy-exact token-list instruction over the conditioning's top-3 topics (6 words each) + layer-supplied context tokens + marker tokens + length target (`lovellm/realmodel.py`); metrics stay mechanical on emitted text; markers can only be emitted if the layer put them in the prompt |
+| prompt rendering | FROZEN (W2 original renderer; restored 2026-10-06 as `lovellm/realmodel_v1.py`, Amendment A9) | copy-exact token-list instruction ("exactly n tokens") over the conditioning's top-3 topics (6 words each, fixed) + layer-supplied context tokens (60-token cap) + marker tokens + length target; metrics stay mechanical on emitted text; markers can only be emitted if the layer put them in the prompt |
 | synthetic-run values | FROZEN as used | all previously-PROVISIONAL model constants (ETA_TRUST 0.04, K_DEPTH 12, EWMAs 0.20/0.15/0.25, salience 0.98/recency 0.98, floor 4/2/1, surplus 8/8/12, G_REF 0.25) carried into the real grid UNCHANGED — no re-tuning against real outputs |
 | padding sensitivity | FROZEN (W2-real) | the padded stranger condition's context tokens are consumed by the real model; sensitivity reported as mean/max |Δ quality| across the induced padding lengths |
 
@@ -119,10 +119,10 @@ content; the instrument (quality score, TOST rule, margins) is UNCHANGED.
 
 | item | status | value |
 |---|---|---|
-| guarded conditioning mix | FROZEN (R1) | probe 0.75 / pref 0.15 / need 0.10 on probe responses (was 0.5/0.3/0.2) — relationship share bounded at 25% |
+| guarded conditioning mix | FROZEN (R1); effective values recorded 2026-10-06 (Amendment A2) | NOMINAL probe 0.75 / pref 0.15 / need 0.10 on probe responses (was 0.5/0.3/0.2). `pipeline._conditioning` renormalizes the mixture to unit sum, and `othermodel.need_topics` returns a vector summing to 2 (probe and pref vectors sum to 1), so the EFFECTIVE weights are 0.6818 / 0.1364 / 0.1818 for R1 (relationship share ≈ 32%, not 25%) and 0.4167 / 0.25 / 0.3333 for V1. |
 | marker cap | FROZEN (R1) | at most 1 shared-reference marker per probe response (top salience; was uncapped) |
 | weight-faithful renderer | FROZEN (R1) | the prompt's word list apportions its 16 words to the top topics IN PROPORTION to conditioning weight (largest remainder) — a fixed per-topic count silently flattens the mix the mechanism set (the v1 renderer's defect, found in calibration) |
-| context excerpt cap | FROZEN (R1) | 12 context tokens in the rendered prompt, same cap for every condition (token parity survives into the prompt); the uncapped 60-token dump was the second contamination source found in calibration |
+| context excerpt cap | FROZEN (R1) | 12 context tokens in the rendered prompt, same cap for every condition; the original renderer's 60-token excerpt was the second contamination source found in calibration. NOTE (A10): with this cap, surplus context slots do not change the rendered excerpt or marker list |
 | everything else | UNCHANGED | all other constants, arms, metrics, margins, decoding, grid sizes identical to the W2 freeze |
 | revised prediction | FROZEN (rule) | analytical curve re-derived for R1 constants (a_align = 0.25·0.7 = 0.175; p_ref_max = 1·p_emit/REF_CAP ≈ 0.35) and hash-checked in `results/real_v2/`; the original prediction file is retained |
 | calibration step | RECORDED | two calibration iterations on the calibration split (2 seeds, full + base arms): guarded mix + marker cap produced −0.077; adding proportional word allocation and the context cap produced −0.009 with final D ≈ 0.23–0.24. Evaluation used different generation seeds but the same personas, probe battery, and base model. Repository history does not independently timestamp this sequence. |
@@ -137,7 +137,7 @@ criteria, margins, instrument, decoding, and recorded R1 prediction.
 
 | item | status | value |
 |---|---|---|
-| grid size | IMPLEMENTED (R1-L) | 6 runs per arm, each with a distinct focal persona from a pool of 8 not used in R1 calibration; 6 sessions × 8 turns; 4 probes × 2 paired generations per condition |
+| grid size | IMPLEMENTED (R1-L) | 6 runs per arm, each with a distinct focal persona from a pool of 8 not used in R1 calibration (distractor = pool[(s+3) % 8]: differs from the run's focal persona; four personas serve both roles across runs, A14); 6 sessions × 8 turns; 4 probes × 2 paired generations per condition |
 | decision rule | IMPLEMENTED (R1-L) | non-equivalence thresholds evaluated on point statistics; equivalence requires the full 90% interval within its margin; all decision statistics carry 2,000-draw run-level bootstrap intervals |
 | channel decomposition | FROZEN (R1-L) | full-vs-mismatched final-depth divergence decomposed per channel (person-specific content channels vs history-generic allocation channels), reported |
 | scope note | RECORDED | R1-L personas were not used in calibration; the probe battery and base model are unchanged |
@@ -158,6 +158,32 @@ frozen R1 prediction remain UNCHANGED.
 | battery-B scope | FROZEN (R1-XL) | battery B is measured on the arms feeding the equivalence, floor, and ordering conclusions (full, empty_r, mismatched_r, base_unmodified) and reported for: TOST equivalence, floor check, divergence ordering — the leakage test: R1 was never tuned on these probes |
 | inference framing | IMPLEMENTED (R1-XL) | non-equivalence thresholds use point statistics; equivalence uses the full 90% interval; superiority/ordering bootstraps preserve pairing, quality-equivalence bootstraps resample arms independently; bootstrap medians and intervals are reported |
 | per-component reporting | FROZEN (R1-XL) | valence and need accuracies reported separately (not only combined) for full and empty_r at final depth; the run-level ordering margins listed in the artifact |
+
+## Amendments of 2026-10-06 (documentation and analysis corrections; no mechanism change, no rerun)
+
+A pre-submission code/manuscript reconciliation found five places where this
+record or the paper described the pipeline differently from how it ran. The
+mechanism, the base-model grids, and every stored result table are UNCHANGED;
+the corrections are to the description and to one LLM-free auxiliary analysis.
+`tests/test_consistency.py` pins each corrected property.
+
+| id | item | what the record/paper said | what the code did (all grids) | consequence |
+|---|---|---|---|---|
+| A1 | divergence comparator | stranger at token parity | stranger generated with `context_tokens=[]`; padded stranger used only for padding-sensitivity quality | D confounds the content of retrieved context with its presence; the full-vs-mismatched contrast (both arms carry retrieved context rendered under the same excerpt cap) controls for context PRESENCE and excerpt word count, not for exact model-token length — the two arms' excerpts contain different words, so their tokenized prompt lengths still differ in most pairs |
+| A2 | conditioning weights | 0.75/0.15/0.10 (R1), 0.5/0.3/0.2 (V1) | same constants, but the need vector sums to 2 and the mix is renormalized: effective 0.6818/0.1364/0.1818 (R1), 0.4167/0.25/0.3333 (V1) | the R1 relationship share is ≈32%, not 25% |
+| A3 | right-vs-wrong contrast (R1-XL) | 0.3438, 90% [0.125, 0.531], 95% [0.063, 0.594] from `scripts/analyze_specificity.py` | the script fed the estimator `signal(t)` only, omitting the session-opening shared-event marker the pipeline prepends | corrected with `pipeline.estimator_input`: **0.3750**, 90% [0.125, 0.594], 95% [0.094, 0.625]; full mean 0.625 (= pipeline `ablations.csv`), mismatched 0.25; run-level 11 positive / 3 zero / 2 negative under both. Files: `right_vs_wrong_*_pipeline_stream.csv` (corrected) alongside the original files (retained) |
+| A4 | initiative channel | "agent-initiated message opportunity … realized as a scheduled generation" | `init_rate_known = alloc.initiative / turns_per_session`, entered directly; no proactive generation exists | the channel is allocator state; shape agreement on it is mechanical |
+| A5 | paired generations | N_GEN = 3 | 3 for synthetic, 2 for all real grids | reporting only |
+| A6 | allocation policy | "realized as an explicit decision table" | `allocate()` evaluates the continuous `caring_weight(r)`; `decision_table()` documents it | wording |
+| A7 | decoding length | "response length 2·depth_hint+16 tokens" | `max_tokens = 2·n + 16` is a cap; realized length is the measured depth channel | wording |
+| A8 | joint-signature code | curve criterion = rho, monotone fraction, ratio, curvature, final D | the runners' coded per-arm `crit_curve` checks rho ≥ 0.8, monotone ≥ 0.80, final D ≥ 0.15 only; ratio and curvature are reported for the full arm but not folded into per-arm verdicts | `scripts/verify_joint_rule_full.py` recomputes the COMPLETE rule for every arm on every grid from run-level `divergence.csv` → `results/joint_rule_full_check.csv`; 0 verdicts change |
+| A9 | initial-grid renderer | "each grid regenerates from one command" | `reproduce_real.py` imported the R1 renderer (proportional 16-word list, 12-token context cap); the initial grid was generated with the ORIGINAL renderer (fixed 6 words/topic, 60-token cap) | original renderer restored from paper-repo history (commit 744ba1a) as `lovellm/realmodel_v1.py`; `reproduce_real.py` now uses it. Bit-exact regeneration of `results/real/` under the restored module has NOT been re-run |
+| A10 | context-share allocation path | surplus context slots → reference use + alignment | under the R1 renderer the excerpt is truncated to 12 tokens and markers capped at 1; the floor's four retrieved items together always supply ≥ 12 tokens (the top item alone does in 760/768 cases; signals are 8–30 whitespace tokens, and every checkpoint has ≥ 8 stored turns), so k = 4 vs k = 12 retrieval slots yield identical rendered excerpts and marker lists in 768/768 known-condition retrievals of the R1-XL battery-A/B probes | the context-share path is NOT exercised in the R1 grids; surplus allocation acts only through depth and initiative |
+| A11 | floor check | "invalidates a run on breach" | `metrics.floor_check` compares grid-POOLED mean quality (unpadded empty_r vs base_unmodified); breach marks the grid invalid | pooled, not per-run |
+| A12 | retrieval reinforcement | "reinforced shared references remain retrievable rather than decaying" | item salience is set once at storage (1.0 + bonus if the turn carries a marker) and decays 0.98/turn alongside recency 0.98/turn; the `shared_refs` re-mention counter enters only the marker rendering weight (`_memory_markers`), never retrieval scoring | retrieval favors recent + marker-bearing items; reinforcement does not slow decay |
+| A13 | recorded analytical curve | derived from the mechanism's constants | `curve.R1_CONSTS.a_align = 0.25·0.7` and `V1_CONSTS.a_align = 0.5·0.7` use the NOMINAL relationship share, not the effective share (A2) | with effective shares: R1 final 0.405 → 0.417, ratio 0.840 → 0.845; V1 0.508 → 0.523, 0.862 → 0.866; curvature and rank order unchanged; no shape verdict changes. Recorded files left as hashed |
+| A14 | persona roles (R1-L, R1-XL) | "distractors disjoint from focal personas" (paper §7.5) | R1-L: distractor = pool[(s+3) % 8] → personas 0, 3, 4, 5 are focal in one run and distractor in another; R1-XL: pool[(s+10) % 20] → 10–15 and 0–5 likewise | each run's distractor ≠ its focal persona; cross-run reuse exists and is not modeled by the bootstrap |
+| A15 | `pyproject.toml` | `requires-python >= 3.11` | pinned numpy 2.5.1 requires ≥ 3.12 | corrected to `>= 3.12` |
 
 ## Terminology checklist (the §2 reconciliation, enforced during writing)
 

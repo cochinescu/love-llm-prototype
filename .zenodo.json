@@ -1,8 +1,8 @@
 {
   "title": "lovellm: Reference Implementation of the Artificial Partiality (Love) Mechanism",
   "upload_type": "software",
-  "version": "1.1.0",
-  "description": "Reference implementation accompanying the paper 'Love for Believable AI: Artificial Partiality and Relationship Persistence as an Engineerable Stance'. Includes the lovellm mechanism, constructed-persona generator, seven evaluation arms, synthetic and open-weight-model runners, analytical prediction files with SHA-256 integrity checks, stored result tables, selected per-run decision inputs, a versioned analysis record, and tests. The open-weight model is mlx-community/Qwen2.5-0.5B-Instruct-4bit at revision a5339a4131f135d0fdc6a5c8b5bbed2753bbe0f3. Raw generated text from the historical real-model runs was not retained. Protocol amendments and their outputs were committed together, so the repository does not establish independent temporal precedence and is not described as a preregistration. All relationships are constructed personas; the artifact contains no human data.",
+  "version": "1.2.0",
+  "description": "Reference implementation (v1.2.0: documentation and analysis corrections of 2026-10-06 recorded in PROTOCOL.md; mechanism and stored measurements unchanged from v1.1.0) accompanying the paper 'Love for Believable AI: Artificial Partiality and Relationship Persistence as an Engineerable Stance'. Includes the lovellm mechanism, constructed-persona generator, seven evaluation arms, synthetic and open-weight-model runners, analytical prediction files with SHA-256 integrity checks, stored result tables, selected per-run decision inputs, a versioned analysis record, and tests. The open-weight model is mlx-community/Qwen2.5-0.5B-Instruct-4bit at revision a5339a4131f135d0fdc6a5c8b5bbed2753bbe0f3. Raw generated text from the historical real-model runs was not retained. Protocol amendments and their outputs were committed together, so the repository does not establish independent temporal precedence and is not described as a preregistration. All relationships are constructed personas; the artifact contains no human data.",
   "creators": [
     {
       "name": "Cochinescu, Sebastian",
@@ -12,6 +12,13 @@
   ],
   "license": "MIT",
   "access_right": "open",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/cochinescu/love-llm-prototype/tree/main",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ],
   "keywords": [
     "companion AI",
     "human-AI relationships",

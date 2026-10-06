@@ -48,3 +48,19 @@ Channel decomposition (full − mismatched, final depth): initiative_rate +0.000
 - Marker naturalism: 0.0124 in (0.0, 0.08) → PASS
 
 Total wall time: 6780s
+
+## Amendment 2026-10-06 — right-vs-wrong contrast recomputed with the pipeline's estimator stream (PROTOCOL Amendment A3)
+
+The original `scripts/analyze_specificity.py` fed the estimator `signal(t)` only, omitting the session-opening shared-event marker that the pipeline prepends (`pipeline.estimator_input`). Corrected values (LLM-free, deterministic; original files retained unchanged):
+
+| statistic | original (signal-only stream) | corrected (pipeline stream) |
+|---|---|---|
+| paired mean diff (full − mismatched) | 0.3438 | **0.3750** |
+| 90% interval | [0.1250, 0.5312] | [0.1250, 0.5938] |
+| 95% interval | [0.0625, 0.5938] | [0.0938, 0.6250] |
+| full mean / mismatched mean | 0.5938 / 0.2500 | 0.6250 / 0.2500 |
+| run-level positive / zero / negative | 11 / 3 / 2 | 11 / 3 / 2 |
+
+The corrected full mean (0.625) equals the pipeline's own final-depth full-arm accuracy in `ablations.csv` (0.62). Files: `right_vs_wrong_contrast_pipeline_stream.csv`, `right_vs_wrong_runs_pipeline_stream.csv`.
+
+Also recorded for this grid (PROTOCOL A1, A2, A4): the divergence comparator is the unpadded stranger response (no token parity on D); the R1 effective conditioning weights are 0.6818/0.1364/0.1818; the initiative channel is the allocated rate, not generated messages.

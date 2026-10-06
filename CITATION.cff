@@ -8,13 +8,16 @@ authors:
     affiliation: University of Bucharest
     orcid: "https://orcid.org/0009-0006-1436-4819"
 license: MIT
-version: 1.1.0
-date-released: 2026-07-21
+version: 1.2.0
+date-released: 2026-10-07
 repository-code: "https://github.com/cochinescu/love-llm-prototype"
 identifiers:
   - type: doi
+    value: 10.5281/zenodo.21462976
+    description: "Zenodo concept DOI (resolves to the latest version)"
+  - type: doi
     value: 10.5281/zenodo.21462977
-    description: "Zenodo archive of this artifact release (v1.1.0)"
+    description: "Zenodo archive of v1.1.0, the version under which the measurements were run"
 keywords:
   - companion AI
   - human-AI relationships

@@ -9,6 +9,8 @@ and the capability-equivalence TOST (full arm's known-condition quality vs
 the unmodified base model, cluster bootstrap, specified margin).
 
 Grid sizes and decoding parameters are the PROTOCOL "W2 freeze" values.
+This runner uses the ORIGINAL prompt renderer (`lovellm.realmodel_v1`);
+the R1 renderer in `lovellm.realmodel` is used by reproduce_real_v2.py onward.
 """
 
 from __future__ import annotations
@@ -38,7 +40,8 @@ from lovellm.metrics import (  # noqa: E402
 )
 from lovellm.personas import make_pool  # noqa: E402
 from lovellm.pipeline import run_relationship  # noqa: E402
-from lovellm.realmodel import PINNED_MODEL, PINNED_REVISION, TEMP, TOP_P, MLXBaseModel  # noqa: E402
+from lovellm.realmodel import PINNED_MODEL, PINNED_REVISION, TEMP, TOP_P  # noqa: E402
+from lovellm.realmodel_v1 import MLXBaseModelV1  # noqa: E402  (ORIGINAL renderer; PROTOCOL A9)
 from scripts.plot import (  # noqa: E402
     fig_ablations,
     fig_divergence_curve,
@@ -91,7 +94,10 @@ def main() -> None:
 
     n_turns = N_SESSIONS * TURNS_PER_SESSION
     pool = make_pool(N_USERS, n_turns, REPORTING_SEED)
-    bm = MLXBaseModel()
+    # The initial grid was generated with the ORIGINAL renderer (fixed 6 words
+    # per topic, 60-token context cap). Restored 2026-10-06 so this grid is
+    # regenerable as run; v2+ use the R1 renderer (lovellm.realmodel).
+    bm = MLXBaseModelV1()
     budget = Budget()
     all_arms = CORE_ARMS + [BASE_UNMODIFIED]
 

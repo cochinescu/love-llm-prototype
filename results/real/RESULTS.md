@@ -46,3 +46,7 @@ prediction was verified untouched before any run (sha256 `3043b199b5c3f98a…`).
 | base_unmodified | 7.732 [7.531, 8.192] | 762534.812 [759441.785, 769541.290] |
 
 Total wall time: 1607s
+
+## Amendment 2026-10-06 (PROTOCOL A9)
+
+This grid was generated with the ORIGINAL prompt renderer (fixed 6 words per topic, 60-token context cap), which revision R1 replaced. The renderer has been restored as `lovellm/realmodel_v1.py` and `scripts/reproduce_real.py` now uses it; bit-exact regeneration under the restored module has not been re-run.

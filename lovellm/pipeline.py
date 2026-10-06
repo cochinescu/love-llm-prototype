@@ -134,6 +134,19 @@ def _conditioning(
     return np.concatenate([probe[:STYLE_DIM], topics])
 
 
+def estimator_input(source: Persona, g_t: int, turns_per_session: int) -> str:
+    """The exact text the layer (R store and other-model) observes at global
+    turn `g_t`: the persona's signal, prefixed on the first turn of each
+    session by that session's shared-event marker. Offline analyses that
+    re-run the estimator (scripts/analyze_specificity.py) MUST build their
+    stream with this function so they read what the pipeline read
+    (2026-10-06 amendment; tests/test_consistency.py enforces it)."""
+    sig = source.signal(g_t)
+    if g_t % turns_per_session == 0:
+        sig = source.shared_event(g_t // turns_per_session) + " " + sig
+    return sig
+
+
 def _memory_markers(
     items: list[rstore.MemoryItem], r: rstore.RState, mech: MechanismConfig,
 ) -> list[tuple[str, float]]:
@@ -179,9 +192,7 @@ def run_relationship(
     for session in range(n_sessions):
         for turn in range(turns_per_session):
             g_t = session * turns_per_session + turn
-            sig = source.signal(g_t)
-            if turn == 0:
-                sig = source.shared_event(session) + " " + sig
+            sig = estimator_input(source, g_t, turns_per_session)
             t0 = time.perf_counter()
             if arm.use_rstore:
                 rstore.update(r, sig, session, g_t)
