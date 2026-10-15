@@ -33,4 +33,10 @@ preferred-citation:
       affiliation: University of Bucharest
       orcid: "https://orcid.org/0009-0006-1436-4819"
   year: 2026
-  journal: "Manuscript"
+  doi: 10.48550/arXiv.2610.09895
+  url: "https://arxiv.org/abs/2610.09895"
+  identifiers:
+    - type: other
+      value: "arXiv:2610.09895"
+      description: "arXiv preprint, cs.HC (v1, 2026-10-07)"
+  notes: "arXiv preprint. Paper 4 of the Perceived AGI series; companion framework paper arXiv:2607.15883."

@@ -17,6 +17,12 @@
       "identifier": "https://github.com/cochinescu/love-llm-prototype/tree/main",
       "relation": "isSupplementTo",
       "scheme": "url"
+    },
+    {
+      "identifier": "10.48550/arXiv.2610.09895",
+      "relation": "isSupplementTo",
+      "scheme": "doi",
+      "resource_type": "publication-preprint"
     }
   ],
   "keywords": [
